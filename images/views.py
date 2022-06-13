@@ -10,7 +10,7 @@ from django.views.decorators.http import require_POST
 from common.decorators import ajax_required
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage,PageNotAnInteger
-
+from common.ajax import is_ajax
 # Create your views here.
 @login_required
 def image_create(request):
@@ -66,14 +66,14 @@ def image_list(request):
         # If page is not an integer deliver the first page
         images = paginator.page(1)
     except EmptyPage:
-        if request.is_ajax():
+        if is_ajax(request):
             # If the request is AJAX and the page is out of range
             # return an empty page
             return HttpResponse('')
             # If page is out of range deliver last page of results
         images = paginator.page(paginator.num_pages)
     
-    if request.is_ajax():
+    if is_ajax(request):
         return render(request,"images/image/list_ajax.html",{"sectopm":'images',"images":images})
     
     return render(request,"images/image/list.html",{"sectopm":'images',"images":images})
