@@ -1,4 +1,5 @@
 .env/
+.venv/
 
 # Compiled Java class files
 *.class
