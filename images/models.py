@@ -13,6 +13,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to='images/%Y/%m/%d/')
     description = models.TextField(blank=True)
     users_like = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='images_liked',blank=True)
+    total_likes = models.PositiveIntegerField(db_index=True,default=0)
     created = models.DateField(auto_now_add=True,db_index=True)
 
     def __str__(self):
