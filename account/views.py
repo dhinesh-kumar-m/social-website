@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+
+from actions.models import Action
 from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
@@ -36,7 +38,12 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-    return render(request,'account/dashboard.html',{'section': 'dashboard'})
+    actions = Action.objects.exclude(user= request.user)
+    following_ids = request.user.following.values_list('id',flat=True)
+
+    if following_ids:
+        actions = actions.filter(user_id__in=following_ids)[:10]
+    return render(request,'account/dashboard.html',{'section': 'dashboard','actions':actions})
     
 def register(request):
     if request.method == 'POST':
