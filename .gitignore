@@ -41,6 +41,9 @@ Thumbs.db
 *.mov
 *.wmv
 
+#media
+/media
+
 **/migrations/**
 **/migrations/*
 !**/migrations
